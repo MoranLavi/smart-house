@@ -1,21 +1,13 @@
-from tinydb import TinyDB, Query
-
-db = TinyDB('db.json')
 
 
 class Device:
+
     def __init__(self, device_id, device_name, device_type):
         self.device_id = device_id
         self.device_name = device_name
         self.device_type = device_type
         self.state = 'Off'
 
-        # db.insert({
-        #     "identifier": self.device_id,
-        #     "device_name": self.device_name,
-        #     "device_type": self.device_type,
-        #     "state": self.state
-        # })
     def get_device_id(self):
         return self.device_id
 
