@@ -44,24 +44,13 @@ db = TinyDB('db.json')
 
 
 def init_devices():
-    devices = []
-    bedroom_tv = Tv("bedroom-tv", "Bedroom TV", "tv")
-    living_room_tv = Tv("living-room-tv", "Living Room TV", "tv")
-    air_conditioner = AirConditioner("air-conditioner", "Air Conditioner", "air_conditioner")
-    microwave = Microwave("microwave", "Microwave", "microwave")
-    computer = Computer("computer", "Computer", "computer")
-    devices.append(bedroom_tv)
-    devices.append(living_room_tv)
-    devices.append(air_conditioner)
-    devices.append(microwave)
-    devices.append(computer)
-    return devices
-
-def add_new_device():
-    identifier = input('Identifier: ')
-    device_name = input('Device name: ')
-    device_type = input('Device type: ')
-    device = Device(identifier, device_name, device_type)
+    return [
+        Tv("bedroom-tv", "Bedroom TV", "tv"),
+        Tv("living-room-tv", "Living Room TV", "tv"),
+        AirConditioner("air-conditioner", "Air Conditioner", "air_conditioner"),
+        Microwave("microwave", "Microwave", "microwave"),
+        Computer("computer", "Computer", "computer")
+    ]
 
 
 if __name__ == '__main__':
