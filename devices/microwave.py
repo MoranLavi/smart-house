@@ -21,6 +21,9 @@ class Microwave(Device):
         except ValueError:
             print("Error, please enter numeric up to 30℃")
 
+    def get_timer(self):
+        return self.timer
+
     def set_timer(self, time):
         if time:
             self.timer = time

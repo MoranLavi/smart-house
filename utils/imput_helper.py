@@ -5,6 +5,11 @@ class InputHelper:
 
     @staticmethod
     def user_interaction(devices):
+        print(
+            '''
+            Welcome to Smart Home!
+            at any time enter exit to exit the program
+            ''')
         while True:
             user_commend = input('Please enter your commend: ').lower()
             if user_commend == 'exit':
@@ -14,66 +19,89 @@ class InputHelper:
             for device in devices:
                 if device_name == device.get_device_id():
                     if "turn" in user_commend.split():
-                        if "on" in user_commend.split():
-                            device.turn_on()
-                            print(device.get_device_name(), 'is turned ', device.get_state())
-                        elif "off" in user_commend.split():
-                            device.turn_off()
-                            print(device.get_device_name(), 'is turned ', device.get_state())
-
+                        InputHelper.set_device_status(device, user_commend)
                     elif "query" in user_commend.split():
-                        if "status" in user_commend.split():
-                            print('The', device.get_device_name(), 'is turned', device.get_state())
-                        elif "degrees" in user_commend.split():
-                            print(device.get_device_name(), 'is on', device.get_degrees(), 'degrees')
-                        elif "channel" in user_commend.split():
-                            print(device.get_device_name(), 'channel is on', device.get_chanel())
-
+                        InputHelper.query_device_status(device, user_commend)
                     elif "switch" in user_commend.split():
-                        channel = input('Choose channel: ').lower()
-                        device.set_chanel(channel)
-                        print(device.get_device_name(), 'channel is set to ', channel)
-
+                        InputHelper.switch_device_channel(device)
                     elif "degrees" in user_commend.split():
-                        if device.get_device_name().lower() == 'microwave':
-                            while True:
-                                try:
-                                    degree = int(input('Set degrees to (Up to 30℃): ').lower())
-                                except ValueError:
-                                    print("You have entered invalid value, please enter only digits up to 30")
-                                else:
-                                    if 0 <= degree < 30:
-                                        device.set_degrees(degree)
-                                        break
-                                    else:
-                                        print('Out of range. Try again')
+                        InputHelper.set_device_degrees_timer(device)
 
-                            while True:
-                                try:
-                                    timer = int(input('Set timer to (Time in seconds): ').lower())
-                                except ValueError:
-                                    print("You have entered invalid value, please enter only digits")
-                                else:
-                                    if 0 <= timer <= 1000:
-                                        device.set_timer(timer)
-                                        print('Microwave is set to', degree, '℃ and the timer is set to', timer,
-                                              'seconds')
-                                        break
-                                    else:
-                                        print('Out of range. Try again')
+    @staticmethod
+    def set_device_status(device, user_commend):
+        if "on" in user_commend.split():
+            device.turn_on()
+            print(device.get_device_name(), 'is turned ', device.get_state())
+        elif "off" in user_commend.split():
+            device.turn_off()
+            print(device.get_device_name(), 'is turned ', device.get_state())
 
-                        elif device.get_device_name().lower() == 'air-conditioner':
-                            while True:
-                                try:
-                                    degree = int(input('Set degrees to (Up to 30℃): ').lower())
-                                except ValueError:
-                                    print("You have entered invalid value, please enter only digits up to 30")
-                                else:
-                                    if 0 <= degree < 30:
-                                        device.set_degrees(degree)
-                                        break
-                                    else:
-                                        print('Out of range. Try again')
+    @staticmethod
+    def query_device_status(device, user_commend):
+        if "status" in user_commend.split():
+            print('The', device.get_device_name(), 'is turned', device.get_state())
+        elif "degrees" in user_commend.split():
+            print(device.get_device_name(), 'is on', device.get_degrees(), 'degrees')
+        elif "channel" in user_commend.split():
+            print(device.get_device_name(), 'channel is on', device.get_chanel())
+
+    @staticmethod
+    def switch_device_channel(device):
+        channel = input('Choose channel: ').lower()
+        device.set_chanel(channel)
+        print(device.get_device_name(), 'channel is set to ', channel)
+
+    @staticmethod
+    def set_device_degrees_timer(device):
+        if device.get_device_name().lower() == 'microwave':
+            InputHelper.set_device_degrees(device)
+            while True:
+                try:
+                    timer = int(input('Set timer to (Time in seconds): ').lower())
+                except ValueError:
+                    print("You have entered invalid value, please enter only digits")
+                else:
+                    if 0 <= timer <= 1000:
+                        device.set_timer(timer)
+                        print(device.get_device_name(), 'is set to', device.get_degrees(), '℃ and the timer is set to',
+                              timer, 'seconds')
+                        break
+                    else:
+                        print('Out of range. Try again')
+
+        elif device.get_device_name().lower() == 'air-conditioner':
+            InputHelper.set_device_degrees(device)
+            InputHelper.set_device_timer(device)
+            print(device.get_device_name(), 'is set to', device.get_degrees(), '℃ and the timer is set to',
+                  device.get_timer(), 'seconds')
+
+    @staticmethod
+    def set_device_degrees(device):
+        while True:
+            try:
+                degree = int(input('Set degrees to (Up to 30℃): '))
+            except ValueError:
+                print("You have entered invalid value, please enter only digits up to 30")
+            else:
+                if 0 <= degree < 30:
+                    device.set_degrees(degree)
+                    break
+                else:
+                    print('Out of range. Try again')
+
+    @staticmethod
+    def set_device_timer(device):
+        while True:
+            try:
+                timer = int(input('Set timer to (Time in seconds): '))
+            except ValueError:
+                print("You have entered invalid value, please enter only digits")
+            else:
+                if 0 <= timer <= 1000:
+                    device.set_timer(timer)
+                    break
+                else:
+                    print('Out of range. Try again')
 
     @staticmethod
     def get_device_name(text):
@@ -102,4 +130,3 @@ class InputHelper:
                 if result:
                     device_temp_name = result.group(1)
                     return device_temp_name.strip().replace(' ', '-')
-

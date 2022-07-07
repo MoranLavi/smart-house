@@ -1,3 +1,7 @@
+import traceback
+
+from fastapi import FastAPI, HTTPException
+
 from devices.computer import Computer
 from devices.air_conditioner import AirConditioner
 from devices.microwave import Microwave
