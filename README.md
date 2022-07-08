@@ -1,10 +1,19 @@
+# Smart Home Service
+## Usage
+All responses will have the form
+```json
+{
+  "data": "Mixed type holding the content of the response", 
+  "message": "Description of what happened"
+}
+```
 
 **Arguments**
 - `"identifier":string` a globally unique identifier for this device
 - `"name":string` a friendly name for this device
 - `"device_type":string` the type of the device as understood by the client
 
-**Commends**
+**User Commends**
 - Query Bedroom tv status
 - Query Living room tv status
 - Query Microwave status
