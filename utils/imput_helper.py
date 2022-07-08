@@ -1,5 +1,7 @@
 import re
 
+from utils.text_helper import CommandNames, DeviceStatus
+
 
 class InputHelper:
 
@@ -18,31 +20,31 @@ class InputHelper:
             device_name = InputHelper.get_device_name(user_commend)
             for device in devices:
                 if device_name == device.get_device_id():
-                    if "turn" in user_commend.split():
+                    if CommandNames.TURN in user_commend.split():
                         InputHelper.set_device_status(device, user_commend)
-                    elif "query" in user_commend.split():
+                    elif CommandNames.QUERY in user_commend.split():
                         InputHelper.query_device_status(device, user_commend)
-                    elif "switch" in user_commend.split():
+                    elif CommandNames.SWITCH in user_commend.split():
                         InputHelper.switch_device_channel(device)
-                    elif "degrees" in user_commend.split():
+                    elif CommandNames.DEGREES in user_commend.split():
                         InputHelper.set_device_degrees_timer(device)
 
     @staticmethod
     def set_device_status(device, user_commend):
-        if "on" in user_commend.split():
+        if DeviceStatus.ON in user_commend.split():
             device.turn_on()
             print(device.get_device_name(), 'is turned ', device.get_state())
-        elif "off" in user_commend.split():
+        elif DeviceStatus.OFF in user_commend.split():
             device.turn_off()
             print(device.get_device_name(), 'is turned ', device.get_state())
 
     @staticmethod
     def query_device_status(device, user_commend):
-        if "status" in user_commend.split():
+        if CommandNames.STATUS in user_commend.split():
             print('The', device.get_device_name(), 'is turned', device.get_state())
-        elif "degrees" in user_commend.split():
+        elif CommandNames.DEGREES in user_commend.split():
             print(device.get_device_name(), 'is on', device.get_degrees(), 'degrees')
-        elif "channel" in user_commend.split():
+        elif CommandNames.CHANNEL in user_commend.split():
             print(device.get_device_name(), 'channel is on', device.get_chanel())
 
     @staticmethod
@@ -106,21 +108,21 @@ class InputHelper:
     @staticmethod
     def get_device_name(text):
         if text:
-            if "turn" in text.split():
+            if CommandNames.TURN in text.split():
                 device_temp_name = None
-                if "on" in text.split():
+                if DeviceStatus.ON in text.split():
                     device_temp_name = text.replace("turn on", "")
-                elif "off" in text.split():
+                elif DeviceStatus.OFF in text.split():
                     device_temp_name = text.replace("turn off", "")
                 if device_temp_name:
                     return device_temp_name.strip().replace(' ', '-')
-            if "query" in text.split():
+            if CommandNames.QUERY in text.split():
                 result = re.search('query(.*)status', text) or re.search('query(.*)channel', text) \
                          or re.search('query(.*)degrees', text)
                 if result:
                     device_temp_name = result.group(1)
                     return device_temp_name.strip().replace(' ', '-')
-            if 'switch' in text.split():
+            if CommandNames.SWITCH in text.split():
                 result = re.search(' in (.*)', text)
                 if result:
                     device_temp_name = result.group(1)
