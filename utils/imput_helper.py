@@ -1,55 +1,54 @@
 import re
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI()
 
 
 class InputHelper:
 
     @staticmethod
-    def user_interaction(devices):
-        print(
-            '''
-            Welcome to Smart Home!
-            at any time enter exit to exit the program
-            ''')
-        while True:
-            user_commend = input('Please enter your commend: ').lower()
-            if user_commend == 'exit':
-                break
-
-            device_name = InputHelper.get_device_name(user_commend)
-            for device in devices:
-                if device_name == device.get_device_id():
-                    if "turn" in user_commend.split():
-                        InputHelper.set_device_status(device, user_commend)
-                    elif "query" in user_commend.split():
-                        InputHelper.query_device_status(device, user_commend)
-                    elif "switch" in user_commend.split():
-                        InputHelper.switch_device_channel(device)
-                    elif "degrees" in user_commend.split():
-                        InputHelper.set_device_degrees_timer(device)
-
-    @staticmethod
     def set_device_status(device, user_commend):
         if "on" in user_commend.split():
             device.turn_on()
-            print(device.get_device_name(), 'is turned ', device.get_state())
+            response = {
+                "data": user_commend,
+                "message": device.get_device_name() + ' is turned ' + device.get_state()
+            }
+            return response
         elif "off" in user_commend.split():
             device.turn_off()
-            print(device.get_device_name(), 'is turned ', device.get_state())
+            response = {
+                "data": user_commend,
+                "message": device.get_device_name() + ' is turned ' + device.get_state()
+            }
+            return response
 
     @staticmethod
     def query_device_status(device, user_commend):
         if "status" in user_commend.split():
-            print('The', device.get_device_name(), 'is turned', device.get_state())
+            response = {
+                "data": user_commend,
+                "message": 'The ' + device.get_device_name() + ' is turned ' + device.get_state()
+            }
+            return response
         elif "degrees" in user_commend.split():
-            print(device.get_device_name(), 'is on', device.get_degrees(), 'degrees')
+            response = {
+                "data": user_commend,
+                "message": device.get_device_name() + ' is on ' + device.get_degrees() + 'degrees'
+            }
+            return response
         elif "channel" in user_commend.split():
-            print(device.get_device_name(), 'channel is on', device.get_chanel())
+            response = {
+                "data": user_commend,
+                "message": device.get_device_name() + ' channel is on ' + device.get_chanel()
+            }
+            return response
 
     @staticmethod
     def switch_device_channel(device):
         channel = input('Choose channel: ').lower()
         device.set_chanel(channel)
-        print(device.get_device_name(), 'channel is set to ', channel)
+        print(device.get_device_name(), ' channel is set to ', channel)
 
     @staticmethod
     def set_device_degrees_timer(device):

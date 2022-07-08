@@ -1,24 +1,27 @@
 import traceback
+from fastapi import FastAPI, HTTPException, requests
 
-from fastapi import FastAPI, HTTPException
+from entities.activator import Activator
+from entities.html_request import HtmlRequest
 
-from devices.computer import Computer
-from devices.air_conditioner import AirConditioner
-from devices.microwave import Microwave
-from devices.tv import Tv
-from utils.imput_helper import InputHelper
+app = FastAPI()
 
 
-def init_devices():
-    return [
-        Tv("bedroom-tv", "Bedroom TV", "tv"),
-        Tv("living-room-tv", "Living Room TV", "tv"),
-        AirConditioner("air-conditioner", "Air Conditioner", "air_conditioner"),
-        Microwave("microwave", "Microwave", "microwave"),
-        Computer("computer", "Computer", "computer")
-    ]
+@app.post("/command_activator")
+def command_activator(html_request: HtmlRequest):
+    try:
+        response = Activator.command_activator(html_request)
+    except Exception as e:
+        err = traceback.format_exception(etype=type(e), value=e, tb=e.__traceback__)
+        msg = {
+            "message": str(e),
+            "Error": "Method error",
+            "traceback": err,
+            "success": False,
+            "Method": 'command_activator',
+            "Class": "Activator"
+        }
+        print(msg)
+        raise HTTPException(status_code=422, detail=msg)
 
-
-if __name__ == '__main__':
-    devices = init_devices()
-    InputHelper.user_interaction(devices)
+    return response
