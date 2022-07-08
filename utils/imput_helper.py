@@ -48,7 +48,11 @@ class InputHelper:
     def switch_device_channel(device):
         channel = input('Choose channel: ').lower()
         device.set_chanel(channel)
-        print(device.get_device_name(), ' channel is set to ', channel)
+        response = {
+            "data": 'switch channel in ' + device.get_device_name(),
+            "message": device.get_device_name() + ' channel is set to ' + channel
+        }
+        return response
 
     @staticmethod
     def set_device_degrees_timer(device):
