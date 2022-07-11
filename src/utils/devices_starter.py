@@ -9,9 +9,9 @@ class DeviceInitializer:
     @staticmethod
     def init_devices():
         return [
-            Tv("bedroom-tv", "Bedroom TV", "tv"),
-            Tv("living-room-tv", "Living Room TV", "tv"),
-            AirConditioner("air-conditioner", "Air Conditioner", "air_conditioner"),
-            Microwave("microwave", "Microwave", "microwave"),
-            Computer("computer", "Computer", "computer")
+            Tv(device_id="bedroom-tv", device_name="Bedroom TV", device_type="tv"),
+            Tv(device_id="living-room-tv", device_name="Living Room TV", device_type="tv"),
+            AirConditioner(device_id="air-conditioner", device_name="Air Conditioner", device_type="air_conditioner"),
+            Microwave(device_id="microwave", device_name="Microwave", device_type="microwave"),
+            Computer(device_id="computer", device_name="Computer", device_type="computer")
         ]

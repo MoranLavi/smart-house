@@ -1,101 +1,28 @@
 import re
 
 from utils.text_helper import CommandNames, DeviceStatus
+from commands.query import Query
+from commands.set import Set
+from commands.switch import Switch
+from commands.thermostat_timer import ThermostatAndTimer
 
 
 class CliInput:
 
     @staticmethod
-    def user_interaction(devices, command):
+    def user_interaction(devices, command: str):
         command = command.lower()
         device_name = CliInput.get_device_name(command)
         for device in devices:
-            if device_name == device.get_device_id():
+            if device_name == device.device_id:
                 if CommandNames.TURN in command.split():
-                    CliInput.set_device_status(device, command)
+                    Set.set_device_status(device, command)
                 elif CommandNames.QUERY in command.split():
-                    CliInput.query_device_status(device, command)
+                    Query.query_device_status(device, command)
                 elif CommandNames.SWITCH in command.split():
-                    CliInput.switch_device_channel(device)
+                    Switch.switch_device_channel(device)
                 elif CommandNames.DEGREES in command.split():
-                    CliInput.set_device_degrees_timer(device)
-
-    @staticmethod
-    def set_device_status(device, command):
-        if DeviceStatus.ON in command.split():
-            device.turn_on()
-            print(device.get_device_name(), 'is turned ', device.get_state())
-        elif DeviceStatus.OFF in command.split():
-            device.turn_off()
-            print(device.get_device_name(), 'is turned ', device.get_state())
-
-    @staticmethod
-    def query_device_status(device, command):
-        print(command)
-        if CommandNames.STATUS in command.split():
-            print('The', device.get_device_name(), 'is turned', device.get_state())
-        elif CommandNames.DEGREES in command.split():
-            print(device.get_device_name(), 'is on', device.get_degrees(), 'degrees')
-        elif CommandNames.CHANNEL in command.split():
-            print(device.get_device_name(), 'channel is on', device.get_chanel())
-
-    @staticmethod
-    def switch_device_channel(device):
-        channel = input('Choose channel: ').lower()
-        device.set_chanel(channel)
-        print(device.get_device_name(), 'channel is set to ', channel)
-
-    @staticmethod
-    def set_device_degrees_timer(device):
-        if device.get_device_name().lower() == 'microwave':
-            CliInput.set_device_degrees(device)
-            while True:
-                try:
-                    timer = int(input('Set timer to (Time in seconds): ').lower())
-                except ValueError:
-                    print("You have entered invalid value, please enter only digits")
-                else:
-                    if 0 <= timer <= 1000:
-                        device.set_timer(timer)
-                        print(device.get_device_name(), 'is set to', device.get_degrees(), '℃ and the timer is set to',
-                              timer, 'seconds')
-                        break
-                    else:
-                        print('Out of range. Try again')
-
-        elif device.get_device_name().lower() == 'air-conditioner':
-            CliInput.set_device_degrees(device)
-            CliInput.set_device_timer(device)
-            print(device.get_device_name(), 'is set to', device.get_degrees(), '℃ and the timer is set to',
-                  device.get_timer(), 'seconds')
-
-    @staticmethod
-    def set_device_degrees(device):
-        while True:
-            try:
-                degree = int(input('Set degrees to (Up to 30℃): '))
-            except ValueError:
-                print("You have entered invalid value, please enter only digits up to 30")
-            else:
-                if 0 <= degree < 30:
-                    device.set_degrees(degree)
-                    break
-                else:
-                    print('Out of range. Try again')
-
-    @staticmethod
-    def set_device_timer(device):
-        while True:
-            try:
-                timer = int(input('Set timer to (Time in seconds): '))
-            except ValueError:
-                print("You have entered invalid value, please enter only digits")
-            else:
-                if 0 <= timer <= 1000:
-                    device.set_timer(timer)
-                    break
-                else:
-                    print('Out of range. Try again')
+                    ThermostatAndTimer.set_device_degrees_timer(device)
 
     @staticmethod
     def get_device_name(text):
