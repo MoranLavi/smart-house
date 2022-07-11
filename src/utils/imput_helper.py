@@ -24,7 +24,7 @@ class CliInput:
                     ThermostatAndTimer.set_device_degrees_timer(device)
 
     @staticmethod
-    def get_device_name(text):
+    def get_device_name(text: str):
         if text:
             if CommandNames.TURN.value in text.split():
                 device_temp_name = None
