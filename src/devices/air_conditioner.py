@@ -12,5 +12,5 @@ class AirConditioner(Device):
             elif new_degrees:
                 self.degrees = new_degrees
                 print(self.device_name, "is set to", self.degrees, "℃")
-        except ValueError:
+        except ValueError("Input out of range"):
             print("Error, please enter numeric input from 10℃ to 30℃")
