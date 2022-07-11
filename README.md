@@ -23,3 +23,10 @@
 - Query Air conditioner degrees
 - Set degrees and timer to Microwave
 - Set degrees to Air conditioner
+
+## Code Quality and Linting
+
+- [MyPy](https://mypy.readthedocs.io/en/stable/) - type hints checker. pydantic integrates with it to type check data models.
+- [black](https://github.com/psf/black) - code formatter.
+- [isort](https://pypi.org/project/isort/) - sorting import statements.
+- [flake8](https://flake8.pycqa.org/en/latest/) - Style guide enforcement.

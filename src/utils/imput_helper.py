@@ -1,14 +1,13 @@
 import re
 
-from utils.text_helper import CommandNames, DeviceStatus
 from commands.query import Query
 from commands.set import Set
 from commands.switch import Switch
 from commands.thermostat_timer import ThermostatAndTimer
+from utils.text_helper import CommandNames, DeviceStatus
 
 
 class CliInput:
-
     @staticmethod
     def user_interaction(devices, command: str):
         command = command.lower()
@@ -34,20 +33,23 @@ class CliInput:
                 elif DeviceStatus.OFF in text.split():
                     device_temp_name = text.replace("turn off", "")
                 if device_temp_name:
-                    return device_temp_name.strip().replace(' ', '-')
+                    return device_temp_name.strip().replace(" ", "-")
             if CommandNames.QUERY in text.split():
-                result = re.search('query(.*)status', text) or re.search('query(.*)channel', text) \
-                         or re.search('query(.*)degrees', text)
+                result = (
+                    re.search("query(.*)status", text)
+                    or re.search("query(.*)channel", text)
+                    or re.search("query(.*)degrees", text)
+                )
                 if result:
                     device_temp_name = result.group(1)
-                    return device_temp_name.strip().replace(' ', '-')
+                    return device_temp_name.strip().replace(" ", "-")
             if CommandNames.SWITCH in text.split():
-                result = re.search(' in (.*)', text)
+                result = re.search(" in (.*)", text)
                 if result:
                     device_temp_name = result.group(1)
-                    return device_temp_name.strip().replace(' ', '-')
-            if 'set degrees' in text:
-                result = re.search(' to (.*)', text)
+                    return device_temp_name.strip().replace(" ", "-")
+            if "set degrees" in text:
+                result = re.search(" to (.*)", text)
                 if result:
                     device_temp_name = result.group(1)
-                    return device_temp_name.strip().replace(' ', '-')
+                    return device_temp_name.strip().replace(" ", "-")
