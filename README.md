@@ -4,7 +4,7 @@
 - `"name":string` a friendly name for this device
 - `"device_type":string` the type of the device as understood by the client
 
-**Commends**
+**Commands**
 - Query Bedroom tv status
 - Query Living room tv status
 - Query Microwave status

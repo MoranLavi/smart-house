@@ -1,4 +1,4 @@
-from device import Device
+from devices.device import Device
 
 
 class Tv(Device):
