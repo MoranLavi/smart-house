@@ -1,4 +1,7 @@
-class CommandNames:
+from enum import Enum
+
+
+class CommandNames(Enum):
     TURN = "turn"
     QUERY = "query"
     SWITCH = "switch"
@@ -7,6 +10,6 @@ class CommandNames:
     CHANNEL = "channel"
 
 
-class DeviceStatus:
+class DeviceStatus(Enum):
     ON = "on"
     OFF = "off"
